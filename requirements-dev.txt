@@ -1,0 +1,5 @@
+# CPU-only: enough to run the tests and the report.
+numpy
+matplotlib
+httpx
+pytest

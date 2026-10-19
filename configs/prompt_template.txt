@@ -1,0 +1,5 @@
+Database schema:
+{schema}
+
+Question: {question}
+Write a single SQLite query that answers the question.
