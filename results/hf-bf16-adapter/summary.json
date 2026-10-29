@@ -1,0 +1,24 @@
+{
+  "backend": "hf",
+  "model": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+  "adapter": "/adapter",
+  "dtype": "bfloat16",
+  "bnb4": false,
+  "n": 1034,
+  "n_scored": 1034,
+  "exec_accuracy": 0.7157,
+  "by_kind": {
+    "match": 740,
+    "wrong_rows": 213,
+    "invalid_sql": 81
+  },
+  "by_difficulty": {
+    "unknown": 0.7157
+  },
+  "wall_seconds": 496.191,
+  "requests_per_s": 2.084,
+  "output_tokens_per_s": 65.5,
+  "mean_completion_tokens": 31.4,
+  "peak_memory_gb": 7.614075392,
+  "model_size_gb": null
+}

@@ -1,0 +1,25 @@
+{
+  "backend": "hf",
+  "model": "models/merged-bf16",
+  "adapter": null,
+  "dtype": "bfloat16",
+  "bnb4": true,
+  "n": 1034,
+  "n_scored": 1034,
+  "exec_accuracy": 0.707,
+  "exec_accuracy_strict": 0.675,
+  "by_kind": {
+    "match": 731,
+    "wrong_rows": 213,
+    "invalid_sql": 90
+  },
+  "by_difficulty": {
+    "unknown": 0.707
+  },
+  "wall_seconds": 138.191,
+  "requests_per_s": 7.482,
+  "output_tokens_per_s": 241.0,
+  "mean_completion_tokens": 32.2,
+  "peak_memory_gb": 3.972848128,
+  "model_size_gb": 3.087
+}

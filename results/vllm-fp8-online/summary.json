@@ -1,0 +1,28 @@
+{
+  "backend": "vllm",
+  "model": "models/merged-bf16",
+  "adapter": null,
+  "quantization": "fp8",
+  "speculative_ngram": 0,
+  "prefix_caching": true,
+  "max_num_seqs": 256,
+  "kv_cache_dtype": "auto",
+  "n": 1034,
+  "n_scored": 1034,
+  "exec_accuracy": 0.7524,
+  "exec_accuracy_strict": 0.7273,
+  "by_kind": {
+    "match": 778,
+    "wrong_rows": 174,
+    "invalid_sql": 82
+  },
+  "by_difficulty": {
+    "unknown": 0.7524
+  },
+  "wall_seconds": 4.05,
+  "requests_per_s": 255.294,
+  "output_tokens_per_s": 7831.9,
+  "mean_completion_tokens": 30.7,
+  "peak_memory_gb": null,
+  "model_size_gb": 3.087
+}
