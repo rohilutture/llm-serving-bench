@@ -1,7 +1,7 @@
 .venv/
 __pycache__/
-data/
-models/
+/data/
+/models/
 results/*/
 results/*.log
 *.pyc
