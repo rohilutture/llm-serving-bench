@@ -4,22 +4,23 @@
   "adapter": null,
   "dtype": "bfloat16",
   "bnb4": false,
+  "repetition_penalty": 1.0,
   "n": 1034,
   "n_scored": 1034,
-  "exec_accuracy": 0.7437,
-  "exec_accuracy_strict": 0.7137,
+  "exec_accuracy": 0.7582,
+  "exec_accuracy_strict": 0.7321,
   "by_kind": {
-    "match": 769,
-    "wrong_rows": 186,
-    "invalid_sql": 79
+    "match": 784,
+    "wrong_rows": 172,
+    "invalid_sql": 78
   },
   "by_difficulty": {
-    "unknown": 0.7437
+    "unknown": 0.7582
   },
-  "wall_seconds": 109.158,
+  "wall_seconds": 109.163,
   "requests_per_s": 9.472,
-  "output_tokens_per_s": 296.1,
-  "mean_completion_tokens": 31.3,
+  "output_tokens_per_s": 291.8,
+  "mean_completion_tokens": 30.8,
   "peak_memory_gb": 5.845545472,
   "model_size_gb": 3.087
 }

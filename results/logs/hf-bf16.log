@@ -1,27 +1,28 @@
 [transformers] `torch_dtype` is deprecated! Use `dtype` instead!
-Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:   0%|          | 1/338 [00:00<01:03,  5.33it/s]Loading weights:   5%|▌         | 18/338 [00:00<00:04, 71.37it/s]Loading weights:  12%|█▏        | 39/338 [00:00<00:02, 117.96it/s]Loading weights:  18%|█▊        | 62/338 [00:00<00:01, 152.65it/s]Loading weights:  25%|██▍       | 84/338 [00:00<00:01, 170.20it/s]Loading weights:  31%|███▏      | 106/338 [00:00<00:01, 177.15it/s]Loading weights:  38%|███▊      | 130/338 [00:00<00:01, 195.54it/s]Loading weights:  45%|████▍     | 151/338 [00:00<00:00, 193.20it/s]Loading weights:  51%|█████     | 173/338 [00:01<00:00, 197.15it/s]Loading weights:  57%|█████▋    | 194/338 [00:01<00:00, 200.70it/s]Loading weights:  64%|██████▎   | 215/338 [00:01<00:00, 202.92it/s]Loading weights:  71%|███████   | 240/338 [00:01<00:00, 208.46it/s]Loading weights:  78%|███████▊  | 262/338 [00:01<00:00, 211.62it/s]Loading weights:  84%|████████▍ | 284/338 [00:01<00:00, 213.34it/s]Loading weights:  91%|█████████ | 306/338 [00:01<00:00, 209.87it/s]Loading weights:  97%|█████████▋| 328/338 [00:01<00:00, 191.83it/s]Loading weights: 100%|██████████| 338/338 [00:01<00:00, 185.10it/s]
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:   5%|▌         | 17/338 [00:00<00:01, 168.14it/s]Loading weights:  33%|███▎      | 111/338 [00:00<00:00, 607.93it/s]Loading weights:  61%|██████    | 207/338 [00:00<00:00, 761.73it/s]Loading weights:  90%|████████▉ | 303/338 [00:00<00:00, 837.83it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 769.25it/s]
 {
   "backend": "hf",
   "model": "models/merged-bf16",
   "adapter": null,
   "dtype": "bfloat16",
   "bnb4": false,
+  "repetition_penalty": 1.0,
   "n": 1034,
   "n_scored": 1034,
-  "exec_accuracy": 0.7437,
-  "exec_accuracy_strict": 0.7137,
+  "exec_accuracy": 0.7582,
+  "exec_accuracy_strict": 0.7321,
   "by_kind": {
-    "match": 769,
-    "wrong_rows": 186,
-    "invalid_sql": 79
+    "match": 784,
+    "wrong_rows": 172,
+    "invalid_sql": 78
   },
   "by_difficulty": {
-    "unknown": 0.7437
+    "unknown": 0.7582
   },
-  "wall_seconds": 109.158,
+  "wall_seconds": 109.163,
   "requests_per_s": 9.472,
-  "output_tokens_per_s": 296.1,
-  "mean_completion_tokens": 31.3,
+  "output_tokens_per_s": 291.8,
+  "mean_completion_tokens": 30.8,
   "peak_memory_gb": 5.845545472,
   "model_size_gb": 3.087
 }

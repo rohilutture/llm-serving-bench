@@ -4,21 +4,23 @@
   "adapter": "/adapter",
   "dtype": "bfloat16",
   "bnb4": false,
+  "repetition_penalty": 1.0,
   "n": 1034,
   "n_scored": 1034,
-  "exec_accuracy": 0.7157,
+  "exec_accuracy": 0.7602,
+  "exec_accuracy_strict": 0.7331,
   "by_kind": {
-    "match": 740,
-    "wrong_rows": 213,
-    "invalid_sql": 81
+    "match": 786,
+    "wrong_rows": 168,
+    "invalid_sql": 80
   },
   "by_difficulty": {
-    "unknown": 0.7157
+    "unknown": 0.7602
   },
-  "wall_seconds": 496.191,
-  "requests_per_s": 2.084,
-  "output_tokens_per_s": 65.5,
-  "mean_completion_tokens": 31.4,
+  "wall_seconds": 497.346,
+  "requests_per_s": 2.079,
+  "output_tokens_per_s": 64.2,
+  "mean_completion_tokens": 30.9,
   "peak_memory_gb": 7.614075392,
   "model_size_gb": null
 }

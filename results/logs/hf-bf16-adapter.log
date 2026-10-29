@@ -1,0 +1,28 @@
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:   0%|          | 1/338 [00:00<01:18,  4.29it/s]Loading weights:   7%|▋         | 25/338 [00:00<00:03, 92.10it/s]Loading weights:  14%|█▍        | 47/338 [00:00<00:02, 133.05it/s]Loading weights:  19%|█▉        | 64/338 [00:00<00:01, 137.20it/s]Loading weights:  26%|██▌       | 88/338 [00:00<00:01, 165.64it/s]Loading weights:  32%|███▏      | 109/338 [00:00<00:01, 178.14it/s]Loading weights:  39%|███▉      | 132/338 [00:00<00:01, 185.78it/s]Loading weights:  46%|████▌     | 156/338 [00:00<00:00, 193.40it/s]Loading weights:  53%|█████▎    | 180/338 [00:01<00:00, 188.20it/s]Loading weights:  59%|█████▉    | 201/338 [00:01<00:00, 192.78it/s]Loading weights:  65%|██████▌   | 221/338 [00:01<00:00, 192.77it/s]Loading weights:  72%|███████▏  | 243/338 [00:01<00:00, 191.70it/s]Loading weights:  78%|███████▊  | 265/338 [00:01<00:00, 199.32it/s]Loading weights:  85%|████████▍ | 287/338 [00:01<00:00, 201.52it/s]Loading weights:  92%|█████████▏| 312/338 [00:01<00:00, 211.05it/s]Loading weights:  99%|█████████▉| 334/338 [00:01<00:00, 211.41it/s]Loading weights: 100%|██████████| 338/338 [00:01<00:00, 180.27it/s]
+{
+  "backend": "hf",
+  "model": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+  "adapter": "/adapter",
+  "dtype": "bfloat16",
+  "bnb4": false,
+  "repetition_penalty": 1.0,
+  "n": 1034,
+  "n_scored": 1034,
+  "exec_accuracy": 0.7602,
+  "exec_accuracy_strict": 0.7331,
+  "by_kind": {
+    "match": 786,
+    "wrong_rows": 168,
+    "invalid_sql": 80
+  },
+  "by_difficulty": {
+    "unknown": 0.7602
+  },
+  "wall_seconds": 497.346,
+  "requests_per_s": 2.079,
+  "output_tokens_per_s": 64.2,
+  "mean_completion_tokens": 30.9,
+  "peak_memory_gb": 7.614075392,
+  "model_size_gb": null
+}

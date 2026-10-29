@@ -1,0 +1,26 @@
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:   6%|▌         | 20/338 [00:00<00:01, 198.71it/s]Loading weights:  36%|███▋      | 123/338 [00:00<00:00, 684.20it/s]Loading weights:  65%|██████▌   | 220/338 [00:00<00:00, 813.85it/s]Loading weights:  97%|█████████▋| 327/338 [00:00<00:00, 910.72it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 825.11it/s]
+{
+  "backend": "hf",
+  "model": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+  "adapter": "/adapter",
+  "dtype": "bfloat16",
+  "bnb4": false,
+  "n": 1034,
+  "n_scored": 1034,
+  "exec_accuracy": 0.7157,
+  "by_kind": {
+    "match": 740,
+    "wrong_rows": 213,
+    "invalid_sql": 81
+  },
+  "by_difficulty": {
+    "unknown": 0.7157
+  },
+  "wall_seconds": 496.191,
+  "requests_per_s": 2.084,
+  "output_tokens_per_s": 65.5,
+  "mean_completion_tokens": 31.4,
+  "peak_memory_gb": 7.614075392,
+  "model_size_gb": null
+}

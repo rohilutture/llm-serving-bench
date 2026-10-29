@@ -1,0 +1,28 @@
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:   5%|▍         | 16/338 [00:00<00:02, 159.65it/s]Loading weights:  35%|███▍      | 118/338 [00:00<00:00, 663.95it/s]Loading weights:  65%|██████▍   | 219/338 [00:00<00:00, 790.40it/s]Loading weights:  97%|█████████▋| 327/338 [00:00<00:00, 897.55it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 806.02it/s]
+{
+  "backend": "hf",
+  "model": "models/merged-bf16",
+  "adapter": null,
+  "dtype": "bfloat16",
+  "bnb4": false,
+  "repetition_penalty": 1.0,
+  "n": 1034,
+  "n_scored": 1034,
+  "exec_accuracy": 0.7602,
+  "exec_accuracy_strict": 0.7331,
+  "by_kind": {
+    "match": 786,
+    "wrong_rows": 168,
+    "invalid_sql": 80
+  },
+  "by_difficulty": {
+    "unknown": 0.7602
+  },
+  "wall_seconds": 325.332,
+  "requests_per_s": 3.178,
+  "output_tokens_per_s": 98.4,
+  "mean_completion_tokens": 31.0,
+  "peak_memory_gb": 14.081639936,
+  "model_size_gb": 3.087
+}
