@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 COLS = [("run", "Run"), ("exec_accuracy", "Exec acc"), ("exec_accuracy_strict", "Strict acc"),
@@ -80,6 +81,8 @@ def plot(rows, front, path: Path, bad=()):
 
 
 def main(argv=None):
+    if hasattr(sys.stdout, "reconfigure"):  # Windows consoles default to cp1252 and cannot print the symbols below
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     p = argparse.ArgumentParser()
     p.add_argument("--results", default="results")
     p.add_argument("--baseline", default="hf-bf16")
@@ -93,9 +96,17 @@ def main(argv=None):
         raise SystemExit("no results/*/summary.json found")
     base = add_relative(rows, a.baseline)
     front = pareto(rows)
-    plot(rows, front, Path(a.out).with_suffix(".png"))
-    md = [f"# Serving benchmark\n\nBaseline: `{base['run']}`. Pareto-optimal: "
-          + ", ".join(f"`{f}`" for f in front) + "\n", table(rows),
+    bad = regressions(rows, a.max_acc_drop)
+    usable = [f for f in front if f not in bad]
+    plot(rows, front, Path(a.out).with_suffix(".png"), bad)
+    names = lambda xs: ", ".join(f"`{x}`" for x in xs) or "none"
+    md = [f"# Serving benchmark\n\nBaseline: `{base['run']}`.\n",
+          f"- Pareto-optimal on (accuracy, throughput): {names(front)}",
+          f"- Pareto-optimal AND within {a.max_acc_drop:g} accuracy points of the baseline (the usable set): {names(usable)}",
+          f"- ⚠ Accuracy regression (more than {a.max_acc_drop:g} pts below baseline; fast but not usable): {names(bad)}\n",
+          "`Exec acc` ignores column order (the training repo's rule); `Strict acc` requires identical column order. "
+          "`Weights GB` is blank for runs that quantize at load time.\n",
+          table(rows, bad),
           f"\n![speed vs accuracy]({Path(a.out).with_suffix('.png').name})\n"]
     Path(a.out).write_text("\n".join(md), encoding="utf-8")
     print("\n".join(md))

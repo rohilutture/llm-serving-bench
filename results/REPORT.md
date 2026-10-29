@@ -1,6 +1,12 @@
 # Serving benchmark
 
-Baseline: `hf-bf16`. Pareto-optimal: `vllm-bf16`, `vllm-bf16-kvfp8`, `vllm-bf16-lora`, `vllm-fp8-online`
+Baseline: `hf-bf16`.
+
+- Pareto-optimal on (accuracy, throughput): `vllm-bf16`, `vllm-bf16-kvfp8`, `vllm-bf16-lora`, `vllm-fp8-online`
+- Pareto-optimal AND within 2 accuracy points of the baseline (the usable set): `vllm-bf16`, `vllm-bf16-lora`, `vllm-fp8-online`
+- ⚠ Accuracy regression (more than 2 pts below baseline; fast but not usable): `hf-nf4`, `vllm-bf16-kvfp8`
+
+`Exec acc` ignores column order (the training repo's rule); `Strict acc` requires identical column order. `Weights GB` is blank for runs that quantize at load time.
 
 | Run | Exec acc | Strict acc | Out tok/s | Req/s | Speed-up | Δ acc (pts) | Weights GB | Peak mem GB |
 |---|---|---|---|---|---|---|---|---|
