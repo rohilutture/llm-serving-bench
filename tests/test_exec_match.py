@@ -59,3 +59,36 @@ def test_extract_sql_variants():
 
 def test_schema_ddl(spider_dir):
     assert "CREATE TABLE singer" in schema_ddl(db(spider_dir))
+
+
+def test_column_order_is_ignored_but_recorded_as_not_strict(spider_dir):
+    # Same result set, columns swapped: counts as correct (training-repo rule) but not as strict.
+    r = compare(db(spider_dir), "SELECT age, name FROM singer", "SELECT name, age FROM singer")
+    assert r.correct and r.kind == "match" and not r.strict
+
+
+def test_identical_columns_are_strict(spider_dir):
+    r = compare(db(spider_dir), "SELECT name, age FROM singer", "SELECT name, age FROM singer")
+    assert r.correct and r.strict
+
+
+def test_column_permutation_does_not_hide_wrong_values(spider_dir):
+    r = compare(db(spider_dir), "SELECT age, age FROM singer", "SELECT name, age FROM singer")
+    assert not r.correct and r.kind == "wrong_rows"
+
+
+def test_column_count_mismatch_is_wrong(spider_dir):
+    r = compare(db(spider_dir), "SELECT name FROM singer", "SELECT name, age FROM singer")
+    assert not r.correct
+
+
+def test_ordered_gold_with_permuted_columns(spider_dir):
+    r = compare(db(spider_dir), "SELECT age, name FROM singer ORDER BY age",
+                "SELECT name, age FROM singer ORDER BY age")
+    assert r.correct and not r.strict
+
+
+def test_float_rounding_to_four_places():
+    from bench.exec_match import result_sets_match
+    assert result_sets_match([(1.00004,)], [(1.00001,)], False)
+    assert not result_sets_match([(1.0004,)], [(1.0001,)], False)

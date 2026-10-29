@@ -67,7 +67,7 @@ def score(examples, gens, db_root, workers=8):
         m = compare(str(db_path(db_root, ex.db_id)), sql, ex.gold_sql)
         return {"idx": ex.idx, "db_id": ex.db_id, "difficulty": ex.difficulty,
                 "question": ex.question, "gold": ex.gold_sql, "pred": sql,
-                "raw": g.text, "correct": m.correct, "kind": m.kind,
+                "raw": g.text, "correct": m.correct, "strict": m.strict, "kind": m.kind,
                 "detail": m.detail, "prompt_tokens": g.prompt_tokens,
                 "completion_tokens": g.completion_tokens}
     with ThreadPoolExecutor(workers) as pool:
@@ -86,6 +86,7 @@ def summarize(rows, timings, backend, model):
         "backend": backend.info.name, "model": backend.info.model, **backend.info.extra,
         "n": n, "n_scored": len(scored),
         "exec_accuracy": round(sum(r["correct"] for r in scored) / max(len(scored), 1), 4),
+        "exec_accuracy_strict": round(sum(r["strict"] for r in scored) / max(len(scored), 1), 4),
         "by_kind": dict(Counter(r["kind"] for r in rows)),
         "by_difficulty": {k: round(sum(v) / len(v), 4) for k, v in sorted(tiers.items())},
         "wall_seconds": round(wall, 3),

@@ -27,6 +27,7 @@ def test_perfect_run(spider_dir, tmp_path):
                                         "SELECT name FROM singer WHERE country='USA' ORDER BY age"],
                  "perfect")
     assert s["exec_accuracy"] == 1.0
+    assert s["exec_accuracy_strict"] == 1.0
     assert s["by_kind"] == {"match": 2}
     rows = [json.loads(l) for l in open(tmp_path / "results/perfect/predictions.jsonl")]
     assert [r["idx"] for r in rows] == [0, 1]
