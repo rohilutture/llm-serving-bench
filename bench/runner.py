@@ -94,7 +94,8 @@ def summarize(rows, timings, backend, model):
         "output_tokens_per_s": round(toks / wall, 1) if wall else None,
         "mean_completion_tokens": round(toks / max(n, 1), 1),
         "peak_memory_gb": backend.peak_memory_gb(),
-        "model_size_gb": model_size_gb(model),
+        # Blank when the weights are quantized at load time: the model dir's size would be the bf16 size.
+        "model_size_gb": None if backend.info.extra.get("quantization") else model_size_gb(model),
     }
 
 

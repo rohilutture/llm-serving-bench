@@ -40,6 +40,9 @@ PY
 run hf-bf16-adapter --backend hf --model "$BASE" --adapter "$ADAPTER"
 run hf-bf16         --backend hf --model "$M"
 run hf-nf4          --backend hf --model "$M" --bnb4
+# HF batch-size controls: bs1 = no padding (does left-padded batching cost accuracy?), bs64 = a less handicapped baseline
+run hf-bf16-bs1     --backend hf --model "$M" --batch-size 1
+run hf-bf16-bs64    --backend hf --model "$M" --batch-size 64
 # vLLM: precision / serving knobs
 run vllm-bf16          --backend vllm --model "$M"
 run vllm-bf16-lora     --backend vllm --model "$BASE" --adapter "$ADAPTER"

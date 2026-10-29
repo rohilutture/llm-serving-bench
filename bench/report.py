@@ -8,7 +8,8 @@ import argparse
 import json
 from pathlib import Path
 
-COLS = [("run", "Run"), ("exec_accuracy", "Exec acc"), ("output_tokens_per_s", "Out tok/s"),
+COLS = [("run", "Run"), ("exec_accuracy", "Exec acc"), ("exec_accuracy_strict", "Strict acc"),
+        ("output_tokens_per_s", "Out tok/s"),
         ("requests_per_s", "Req/s"), ("speedup", "Speed-up"), ("delta_acc_pts", "Δ acc (pts)"),
         ("model_size_gb", "Weights GB"), ("peak_memory_gb", "Peak mem GB")]
 
@@ -45,7 +46,12 @@ def pareto(rows):
     return front
 
 
-def table(rows):
+def regressions(rows, max_drop_pts: float):
+    """Runs that lose more than `max_drop_pts` accuracy points vs the baseline: fast but not usable."""
+    return [r["run"] for r in rows if r["delta_acc_pts"] is not None and r["delta_acc_pts"] < -max_drop_pts]
+
+
+def table(rows, bad=()):
     fmt = lambda v: "—" if v is None else str(v)
     lines = ["| " + " | ".join(h for _, h in COLS) + " |",
              "|" + "---|" * len(COLS)]
@@ -54,20 +60,20 @@ def table(rows):
     return "\n".join(lines)
 
 
-def plot(rows, front, path: Path):
+def plot(rows, front, path: Path, bad=()):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
     fig, ax = plt.subplots(figsize=(7, 4.5))
     for r in rows:
         on = r["run"] in front
-        ax.scatter(r.get("output_tokens_per_s") or 0, 100 * r["exec_accuracy"],
-                   s=60, color="#2a6fdb" if on else "#9aa5b1", zorder=3)
+        color = "#d64545" if r["run"] in bad else ("#2a6fdb" if on else "#9aa5b1")
+        ax.scatter(r.get("output_tokens_per_s") or 0, 100 * r["exec_accuracy"], s=60, color=color, zorder=3)
         ax.annotate(r["run"], (r.get("output_tokens_per_s") or 0, 100 * r["exec_accuracy"]),
                     textcoords="offset points", xytext=(6, 4), fontsize=8)
     ax.set_xlabel("Output tokens / s (offline, Spider dev)")
     ax.set_ylabel("Execution accuracy (%)")
-    ax.set_title("Speed vs. accuracy (blue = Pareto-optimal)")
+    ax.set_title("Speed vs. accuracy (blue = Pareto-optimal, red = accuracy regression)")
     ax.grid(alpha=0.3)
     fig.tight_layout()
     fig.savefig(path, dpi=150)
@@ -78,6 +84,9 @@ def main(argv=None):
     p.add_argument("--results", default="results")
     p.add_argument("--baseline", default="hf-bf16")
     p.add_argument("--out", default="results/REPORT.md")
+    p.add_argument("--max-acc-drop", type=float, default=2.0,
+                   help="runs losing more than this many accuracy points vs the baseline are flagged and "
+                        "left out of the recommended set")
     a = p.parse_args(argv)
     rows = load(Path(a.results))
     if not rows:
