@@ -16,7 +16,12 @@ from .base import BackendInfo, Generation
 
 class HFBackend:
     def __init__(self, model: str, adapter: str | None = None,
-                 dtype: str = "bfloat16", load_in_4bit: bool = False):
+                 dtype: str = "bfloat16", load_in_4bit: bool = False,
+                 repetition_penalty: float | None = 1.0):
+        # Pure greedy by default. `generate(do_sample=False)` still applies repetition_penalty from the model's
+        # generation_config.json (Qwen2.5-Coder ships one), which vLLM's hand-built SamplingParams does not;
+        # pass None to inherit the model default (this reproduces the training repo's evaluator).
+        self.repetition_penalty = repetition_penalty
         self.tok = AutoTokenizer.from_pretrained(model)
         self.tok.padding_side = "left"  # decoder-only models must pad on the left
         if self.tok.pad_token is None:
@@ -34,7 +39,9 @@ class HFBackend:
         self.model.eval()
         torch.cuda.reset_peak_memory_stats()
         self.info = BackendInfo("hf", model, {"adapter": adapter, "dtype": dtype,
-                                               "bnb4": load_in_4bit})
+                                               "bnb4": load_in_4bit,
+                                               "repetition_penalty": repetition_penalty if repetition_penalty
+                                               is not None else "model-default"})
 
     def render(self, system, user):
         return render_chat(self.tok, system, user)
@@ -42,8 +49,9 @@ class HFBackend:
     @torch.inference_mode()
     def generate(self, prompts, max_new_tokens):
         enc = self.tok(prompts, return_tensors="pt", padding=True).to("cuda")
+        extra = {} if self.repetition_penalty is None else {"repetition_penalty": self.repetition_penalty}
         out = self.model.generate(**enc, max_new_tokens=max_new_tokens, do_sample=False,
-                                  pad_token_id=self.tok.pad_token_id)
+                                  pad_token_id=self.tok.pad_token_id, **extra)
         new = out[:, enc["input_ids"].shape[1]:]
         gens = []
         for i in range(len(prompts)):

@@ -37,7 +37,10 @@ PY
 }
 
 # HF baselines (the adapter row hf-bf16-adapter is the sanity run)
+# Decoding is pure greedy in every row. hf-bf16-modeldefaults reproduces the training repo's evaluator (HF with the
+# model's generation_config, i.e. a repetition penalty) so the two decoding conventions can be compared.
 run hf-bf16-adapter --backend hf --model "$BASE" --adapter "$ADAPTER"
+run hf-bf16-modeldefaults --backend hf --model "$M" --hf-model-defaults
 run hf-bf16         --backend hf --model "$M"
 run hf-nf4          --backend hf --model "$M" --bnb4
 # HF batch-size controls: bs1 = no padding (does left-padded batching cost accuracy?), bs64 = a less handicapped baseline

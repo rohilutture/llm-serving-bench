@@ -49,7 +49,7 @@ class VLLMBackend:
         return render_chat(self.tok, system, user)
 
     def generate(self, prompts, max_new_tokens):
-        sp = SamplingParams(temperature=0.0, max_tokens=max_new_tokens)
+        sp = SamplingParams(temperature=0.0, repetition_penalty=1.0, max_tokens=max_new_tokens)  # pure greedy
         outs = self.llm.generate(prompts, sp, lora_request=self.lora, use_tqdm=False)
         return [Generation(o.outputs[0].text, len(o.prompt_token_ids),
                            len(o.outputs[0].token_ids)) for o in outs]

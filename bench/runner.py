@@ -102,7 +102,8 @@ def summarize(rows, timings, backend, model):
 def make_backend(a):
     if a.backend == "hf":
         from .backends.hf import HFBackend
-        return HFBackend(a.model, a.adapter, load_in_4bit=a.bnb4)
+        return HFBackend(a.model, a.adapter, load_in_4bit=a.bnb4,
+                         repetition_penalty=None if a.hf_model_defaults else 1.0)
     if a.backend == "vllm":
         from .backends.vllm_backend import VLLMBackend
         return VLLMBackend(a.model, a.adapter, a.quantization,
@@ -145,6 +146,9 @@ def main(argv=None):
     p.add_argument("--max-new-tokens", type=int, default=256)
     p.add_argument("--quantization", help="vLLM quantization override, e.g. fp8")
     p.add_argument("--bnb4", action="store_true", help="HF: bitsandbytes NF4")
+    p.add_argument("--hf-model-defaults", action="store_true",
+                   help="HF: inherit repetition_penalty etc. from the model's generation_config (what the "
+                        "training repo's evaluator does) instead of pure greedy")
     p.add_argument("--spec-ngram", type=int, default=0)
     p.add_argument("--no-prefix-cache", action="store_true")
     p.add_argument("--max-num-seqs", type=int, default=256)
