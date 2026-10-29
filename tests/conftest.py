@@ -28,4 +28,9 @@ def spider_dir(tmp_path):
          "query": "SELECT name FROM singer WHERE country = 'USA' ORDER BY age"},
     ]
     (root / "dev.json").write_text(json.dumps(dev))
+    tables = [{"db_id": "concert", "table_names_original": ["singer"],
+               "column_names_original": [[-1, "*"], [0, "singer_id"], [0, "name"], [0, "age"], [0, "country"]],
+               "column_types": ["text", "number", "text", "number", "text"],
+               "primary_keys": [1], "foreign_keys": []}]
+    (root / "tables.json").write_text(json.dumps(tables))
     return root

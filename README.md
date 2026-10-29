@@ -39,9 +39,9 @@ pip install -r requirements-gpu.txt
 # Spider: download from https://yale-lily.github.io/spider and unzip to data/spider
 #   data/spider/{dev.json, train_spider.json, database/<db_id>/<db_id>.sqlite}
 
-# Put the EXACT prompt template used in training into configs/prompt_template.txt
-# (placeholders {schema} and {question}). A mismatched template lowers accuracy
-# and makes every comparison here meaningless.
+# The prompt and schema format are vendored from the text-to-sql-finetune repo (bench/train_format.py,
+# configs/prompt_template.txt) and are the default, so serving matches how the adapter was trained.
+# Spider's tables.json must sit next to dev.json. (BENCH_SCHEMA_FORMAT=ddl opts into a different format.)
 
 BASE=Qwen/Qwen2.5-Coder-1.5B-Instruct \
 ADAPTER=../text-to-sql-finetune/checkpoints/best \
@@ -51,8 +51,16 @@ bash scripts/load_matrix.sh             # online latency sweep
 
 Then open `results/REPORT.md`.
 
+### Getting the adapter
+The original adapter file is not available, so it is **retrained** with the training repo
+(https://github.com/rohilutture/text-to-sql-finetune: Qwen2.5-Coder-1.5B-Instruct, LoRA, 3 epochs, batch 8 x 4
+accumulation, `--include-samples`), then evaluated there with `scripts/run_eval.py`. Use *that run's* execution accuracy
+as this repo's reference: it will be close to, but not necessarily equal to, the 74.2% of the original adapter.
+
 ### Sanity check first
-Run `hf-bf16-adapter` on the full dev set before anything else. It should reproduce the **74.2%** from the text-to-SQL repo to within about a point. If it doesn't, the prompt template or the SQL extraction differs from training. Fix that before trusting any other row.
+Run `hf-bf16-adapter` on the full dev set before anything else. It must reproduce the training repo's own
+`run_eval.py` number for the same adapter to within about a point. If it doesn't, the prompt, schema format or SQL
+extraction differs from training. Fix that before trusting any other row.
 
 ### DPO stretch
 ```bash

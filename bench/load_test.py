@@ -22,7 +22,7 @@ import httpx
 import numpy as np
 
 from .prompts import DEFAULT_SYSTEM, load_template, user_message
-from .spider import db_path, load_examples, schema_ddl
+from .spider import db_path, load_examples, schema_text
 
 
 async def one_request(client, url, model, user, max_tokens):
@@ -81,7 +81,7 @@ def main(argv=None):
     tpl = load_template(a.prompt_template)
     exs = load_examples(spider / "dev.json")
     random.Random(0).shuffle(exs)
-    users = [user_message(tpl, schema_ddl(str(db_path(spider / "database", e.db_id))), e.question)
+    users = [user_message(tpl, schema_text(str(db_path(spider / "database", e.db_id))), e.question)
              for e in exs[:a.n]]
     rows = []
     for c in a.concurrency:

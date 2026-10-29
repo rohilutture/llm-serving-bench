@@ -21,7 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bench.exec_match import compare
 from bench.prompts import DEFAULT_SYSTEM, extract_sql, load_template, render_chat, user_message
-from bench.spider import db_path, schema_ddl
+from bench.spider import db_path, schema_text
 
 
 def pick_pairs(samples, max_pairs):
@@ -64,7 +64,7 @@ def main():
     llm = LLM(model=a.model, enable_prefix_caching=True, seed=0)
     tok = llm.get_tokenizer()
     prompts = [render_chat(tok, DEFAULT_SYSTEM, user_message(
-        tpl, schema_ddl(str(db_path(spider / "database", r["db_id"]))), r["question"]))
+        tpl, schema_text(str(db_path(spider / "database", r["db_id"]))), r["question"]))
         for r in train]
     outs = llm.generate(prompts, SamplingParams(n=a.k, temperature=a.temperature,
                                                 max_tokens=256, seed=0))

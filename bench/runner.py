@@ -19,7 +19,7 @@ from pathlib import Path
 
 from .exec_match import compare
 from .prompts import DEFAULT_SYSTEM, extract_sql, load_template, user_message
-from .spider import db_path, load_examples, schema_ddl
+from .spider import db_path, load_examples, schema_text
 
 
 def model_size_gb(model: str) -> float | None:
@@ -32,7 +32,7 @@ def model_size_gb(model: str) -> float | None:
 
 def build_prompts(backend, examples, db_root, template, system=DEFAULT_SYSTEM):
     return [backend.render(system, user_message(
-        template, schema_ddl(str(db_path(db_root, ex.db_id))), ex.question))
+        template, schema_text(str(db_path(db_root, ex.db_id))), ex.question))
         for ex in examples]
 
 

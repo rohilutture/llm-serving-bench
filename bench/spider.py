@@ -51,3 +51,37 @@ def schema_ddl(db_file: str) -> str:
     finally:
         con.close()
     return "\n\n".join(r[0].strip() + ";" for r in rows)
+
+
+@lru_cache(maxsize=8)
+def _tables(tables_json: str) -> dict:
+    from .train_format import load_tables
+    return load_tables(tables_json)
+
+
+@lru_cache(maxsize=512)
+def schema_text(db_file: str, fmt: str | None = None) -> str:
+    """Schema text for the prompt. Default format = the exact one the adapter was trained with
+    (`bench.train_format.serialize_schema`, with sample rows, as in the training run).
+
+    BENCH_SCHEMA_FORMAT=ddl switches to raw CREATE TABLE statements (explicit opt-in only).
+    BENCH_INCLUDE_SAMPLES=0 turns sample rows off (only if training was run without --include-samples).
+    A missing tables.json is an error, never a silent fallback to a different format.
+    """
+    import os
+    fmt = fmt or os.environ.get("BENCH_SCHEMA_FORMAT", "train")
+    if fmt == "ddl":
+        return schema_ddl(db_file)
+    if fmt != "train":
+        raise ValueError(f"unknown schema format {fmt!r} (use 'train' or 'ddl')")
+    from .train_format import serialize_schema
+    p = Path(db_file)
+    db_id, tables_json = p.stem, p.parents[2] / "tables.json"
+    if not tables_json.exists():
+        raise FileNotFoundError(
+            f"{tables_json} not found. The training-format schema is built from Spider's tables.json "
+            "(next to dev.json). Pass the Spider root that contains it, or set BENCH_SCHEMA_FORMAT=ddl "
+            "if you really want a different prompt format (this will not match how the adapter was trained).")
+    entry = _tables(str(tables_json))[db_id]
+    include_samples = os.environ.get("BENCH_INCLUDE_SAMPLES", "1") != "0"
+    return serialize_schema(entry, db_path=str(p), include_samples=include_samples)

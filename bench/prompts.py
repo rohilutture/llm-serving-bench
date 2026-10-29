@@ -11,12 +11,8 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-DEFAULT_SYSTEM = "You are an expert SQLite assistant. Return only one SQL query."
-DEFAULT_TEMPLATE = (
-    "Database schema:\n{schema}\n\n"
-    "Question: {question}\n"
-    "Write a single SQLite query that answers the question."
-)
+from .train_format import SYSTEM_PROMPT as DEFAULT_SYSTEM  # noqa: E402  (exact training prompt)
+from .train_format import USER_TEMPLATE as DEFAULT_TEMPLATE  # noqa: E402
 
 
 def load_template(path: str | None) -> str:

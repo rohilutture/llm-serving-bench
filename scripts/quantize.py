@@ -24,7 +24,7 @@ from datasets import Dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from bench.prompts import DEFAULT_SYSTEM, load_template, render_chat, user_message
-from bench.spider import db_path, schema_ddl
+from bench.spider import db_path, schema_text
 
 p = argparse.ArgumentParser()
 p.add_argument("--model", required=True)
@@ -51,7 +51,7 @@ else:
     tpl = load_template(a.prompt_template)
     texts = []
     for r in train[:a.n_calib]:
-        user = user_message(tpl, schema_ddl(str(db_path(spider / "database", r["db_id"]))),
+        user = user_message(tpl, schema_text(str(db_path(spider / "database", r["db_id"]))),
                             r["question"])
         # Include the gold answer so calibration sees realistic output activations too.
         texts.append(render_chat(tok, DEFAULT_SYSTEM, user) + r["query"] + tok.eos_token)

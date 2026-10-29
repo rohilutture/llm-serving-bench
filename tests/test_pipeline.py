@@ -4,13 +4,13 @@ import json
 from bench import report, runner
 from bench.backends.mock import MockBackend
 from bench.prompts import DEFAULT_TEMPLATE, user_message
-from bench.spider import db_path, load_examples, schema_ddl
+from bench.spider import db_path, load_examples, schema_text
 
 
 def answers_for(spider_dir, examples, preds):
     out = {}
     for ex, sql in zip(examples, preds):
-        schema = schema_ddl(str(db_path(spider_dir / "database", ex.db_id)))
+        schema = schema_text(str(db_path(spider_dir / "database", ex.db_id)))
         out[user_message(DEFAULT_TEMPLATE, schema, ex.question)] = sql
     return out
 
