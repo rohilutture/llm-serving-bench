@@ -1,0 +1,13 @@
+== online vllm-bf16: already done, skipping
+== online vllm-bf16-noprefix: already done, skipping
+== online vllm-bf16-ngram5: already done, skipping
+== online vllm-bf16-ngram3 00:42:06
+   c=1   ttft p50 0.011s | latency p50 0.133s p95 0.337s p99 0.435s | 189 out tok/s
+   c=4   ttft p50 0.015s | latency p50 0.137s p95 0.367s p99 0.480s | 694 out tok/s
+   c=16  ttft p50 0.018s | latency p50 0.186s p95 0.465s p99 0.626s | 2086 out tok/s
+   c=64  ttft p50 0.040s | latency p50 0.371s p95 0.834s p99 1.203s | 3978 out tok/s
+== online vllm-bf16-lora: already done, skipping
+== online vllm-fp8: already done, skipping
+== online vllm-w4a16-gptq: already done, skipping
+== online vllm-w4a16-awq: already done, skipping
+== ONLINE DONE 00:44:05

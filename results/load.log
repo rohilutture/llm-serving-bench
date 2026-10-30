@@ -1,0 +1,36 @@
+== online vllm-bf16 00:27:05
+   c=1   ttft p50 0.011s | latency p50 0.114s p95 0.313s p99 0.523s | 216 out tok/s
+   c=4   ttft p50 0.016s | latency p50 0.135s p95 0.376s p99 0.629s | 710 out tok/s
+   c=16  ttft p50 0.021s | latency p50 0.146s p95 0.395s p99 0.667s | 2492 out tok/s
+   c=64  ttft p50 0.041s | latency p50 0.265s p95 0.618s p99 1.046s | 5019 out tok/s
+== online vllm-bf16-noprefix 00:29:00
+   c=1   ttft p50 0.022s | latency p50 0.131s p95 0.327s p99 0.532s | 198 out tok/s
+   c=4   ttft p50 0.028s | latency p50 0.180s p95 0.479s p99 0.785s | 548 out tok/s
+   c=16  ttft p50 0.052s | latency p50 0.314s p95 0.829s p99 1.514s | 1205 out tok/s
+   c=64  ttft p50 0.162s | latency p50 1.107s p95 2.761s p99 4.336s | 1500 out tok/s
+== online vllm-bf16-ngram5 00:30:54
+   c=1   ttft p50 0.011s | latency p50 0.147s p95 0.422s p99 0.517s | 164 out tok/s
+   c=4   ttft p50 0.014s | latency p50 0.155s p95 0.434s p99 0.548s | 610 out tok/s
+   c=16  ttft p50 0.019s | latency p50 0.201s p95 0.569s p99 0.724s | 1772 out tok/s
+   c=64  ttft p50 0.042s | latency p50 0.489s p95 1.205s p99 1.623s | 3027 out tok/s
+== online vllm-bf16-lora 00:33:05
+   c=1   ttft p50 0.018s | latency p50 0.154s p95 0.433s p99 0.763s | 152 out tok/s
+   c=4   ttft p50 0.025s | latency p50 0.177s p95 0.490s p99 0.859s | 531 out tok/s
+   c=16  ttft p50 0.026s | latency p50 0.193s p95 0.553s p99 0.955s | 1805 out tok/s
+   c=64  ttft p50 0.052s | latency p50 0.358s p95 0.946s p99 1.525s | 3498 out tok/s
+== online vllm-fp8 00:35:37
+   c=1   ttft p50 0.012s | latency p50 0.096s p95 0.254s p99 0.457s | 246 out tok/s
+   c=4   ttft p50 0.016s | latency p50 0.100s p95 0.272s p99 0.484s | 908 out tok/s
+   c=16  ttft p50 0.019s | latency p50 0.121s p95 0.326s p99 0.589s | 2870 out tok/s
+   c=64  ttft p50 0.045s | latency p50 0.257s p95 0.624s p99 1.069s | 4996 out tok/s
+== online vllm-w4a16-gptq 00:37:24
+   c=1   ttft p50 0.014s | latency p50 0.067s p95 0.180s p99 0.298s | 357 out tok/s
+   c=4   ttft p50 0.015s | latency p50 0.083s p95 0.211s p99 0.333s | 1174 out tok/s
+   c=16  ttft p50 0.025s | latency p50 0.125s p95 0.300s p99 0.459s | 3053 out tok/s
+   c=64  ttft p50 0.055s | latency p50 0.223s p95 0.538s p99 0.839s | 5928 out tok/s
+== online vllm-w4a16-awq 00:38:51
+   c=1   ttft p50 0.014s | latency p50 0.074s p95 0.177s p99 0.304s | 354 out tok/s
+   c=4   ttft p50 0.016s | latency p50 0.090s p95 0.218s p99 0.378s | 1163 out tok/s
+   c=16  ttft p50 0.027s | latency p50 0.121s p95 0.317s p99 0.528s | 3140 out tok/s
+   c=64  ttft p50 0.061s | latency p50 0.221s p95 0.538s p99 0.851s | 6058 out tok/s
+== ONLINE DONE 00:40:18

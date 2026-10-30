@@ -9,20 +9,28 @@
   "kv_cache_dtype": "fp8",
   "n": 1034,
   "n_scored": 1034,
-  "exec_accuracy": 0.2698,
-  "exec_accuracy_strict": 0.2679,
+  "exec_accuracy": 0.2756,
+  "exec_accuracy_strict": 0.2737,
   "by_kind": {
-    "invalid_sql": 650,
-    "match": 279,
-    "wrong_rows": 105
+    "invalid_sql": 645,
+    "match": 285,
+    "wrong_rows": 104
   },
   "by_difficulty": {
-    "unknown": 0.2698
+    "unknown": 0.2756
   },
-  "wall_seconds": 2.882,
-  "requests_per_s": 358.767,
-  "output_tokens_per_s": 10770.3,
-  "mean_completion_tokens": 30.0,
+  "wall_seconds": 2.585,
+  "requests_per_s": 399.981,
+  "output_tokens_per_s": 11946.8,
+  "mean_completion_tokens": 29.9,
   "peak_memory_gb": null,
-  "model_size_gb": 3.087
+  "model_size_gb": 3.087,
+  "repeats": 5,
+  "wall_seconds_runs": [
+    3.006,
+    2.69,
+    2.495,
+    2.585,
+    2.434
+  ]
 }

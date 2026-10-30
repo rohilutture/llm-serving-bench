@@ -1,0 +1,36 @@
+{
+  "backend": "vllm",
+  "model": "models/w4a16-awq",
+  "adapter": null,
+  "quantization": null,
+  "speculative_ngram": 0,
+  "prefix_caching": true,
+  "max_num_seqs": 256,
+  "kv_cache_dtype": "auto",
+  "n": 1034,
+  "n_scored": 1034,
+  "exec_accuracy": 0.7176,
+  "exec_accuracy_strict": 0.6925,
+  "by_kind": {
+    "match": 742,
+    "wrong_rows": 188,
+    "invalid_sql": 104
+  },
+  "by_difficulty": {
+    "unknown": 0.7176
+  },
+  "wall_seconds": 3.386,
+  "requests_per_s": 305.397,
+  "output_tokens_per_s": 9338.5,
+  "mean_completion_tokens": 30.6,
+  "peak_memory_gb": null,
+  "model_size_gb": 1.148,
+  "repeats": 5,
+  "wall_seconds_runs": [
+    3.936,
+    3.443,
+    3.386,
+    3.379,
+    3.369
+  ]
+}

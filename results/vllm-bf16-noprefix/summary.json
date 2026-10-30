@@ -19,10 +19,18 @@
   "by_difficulty": {
     "unknown": 0.7592
   },
-  "wall_seconds": 20.036,
-  "requests_per_s": 51.607,
-  "output_tokens_per_s": 1594.7,
+  "wall_seconds": 20.164,
+  "requests_per_s": 51.279,
+  "output_tokens_per_s": 1584.6,
   "mean_completion_tokens": 30.9,
   "peak_memory_gb": null,
-  "model_size_gb": 3.087
+  "model_size_gb": 3.087,
+  "repeats": 5,
+  "wall_seconds_runs": [
+    20.102,
+    20.282,
+    20.147,
+    20.164,
+    20.193
+  ]
 }

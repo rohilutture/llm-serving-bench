@@ -1,0 +1,12 @@
+llmcompressor 0.15.0 | torch 2.14.1+cu130 | transformers 5.21.0
+== quantize fp8: already done, skipping
+== quantize w4a16-gptq: already done, skipping
+== quantize w4a16-awq: already done, skipping
+== vllm-fp8 00:52:15
+   exec_acc 0.7563 (strict 0.7282) | 8377.5 out tok/s | 3.787 s wall | weights 1.779 GB
+== vllm-w4a16-gptq 00:53:18
+   exec_acc 0.7398 (strict 0.7147) | 9443.4 out tok/s | 3.361 s wall | weights 1.143 GB
+== vllm-w4a16-awq 00:54:18
+   exec_acc 0.7176 (strict 0.6925) | 9338.5 out tok/s | 3.386 s wall | weights 1.148 GB
+== report written
+== PART 2 DONE 00:55:18

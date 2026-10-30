@@ -1,0 +1,36 @@
+{
+  "backend": "vllm",
+  "model": "models/fp8",
+  "adapter": null,
+  "quantization": null,
+  "speculative_ngram": 0,
+  "prefix_caching": true,
+  "max_num_seqs": 256,
+  "kv_cache_dtype": "auto",
+  "n": 1034,
+  "n_scored": 1034,
+  "exec_accuracy": 0.7563,
+  "exec_accuracy_strict": 0.7282,
+  "by_kind": {
+    "match": 782,
+    "wrong_rows": 182,
+    "invalid_sql": 70
+  },
+  "by_difficulty": {
+    "unknown": 0.7563
+  },
+  "wall_seconds": 3.787,
+  "requests_per_s": 273.027,
+  "output_tokens_per_s": 8377.5,
+  "mean_completion_tokens": 30.7,
+  "peak_memory_gb": null,
+  "model_size_gb": 1.779,
+  "repeats": 5,
+  "wall_seconds_runs": [
+    4.081,
+    3.777,
+    3.787,
+    3.813,
+    3.731
+  ]
+}

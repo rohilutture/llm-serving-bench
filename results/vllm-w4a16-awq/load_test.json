@@ -1,0 +1,50 @@
+[
+  {
+    "concurrency": 1,
+    "n": 256,
+    "wall_s": 23.421,
+    "req_per_s": 10.931,
+    "output_tok_per_s": 353.9,
+    "ttft_p50": 0.0137,
+    "ttft_p95": 0.0157,
+    "latency_p50": 0.0743,
+    "latency_p95": 0.1772,
+    "latency_p99": 0.3045
+  },
+  {
+    "concurrency": 4,
+    "n": 256,
+    "wall_s": 7.18,
+    "req_per_s": 35.656,
+    "output_tok_per_s": 1163.1,
+    "ttft_p50": 0.0162,
+    "ttft_p95": 0.0266,
+    "latency_p50": 0.0902,
+    "latency_p95": 0.2181,
+    "latency_p99": 0.3778
+  },
+  {
+    "concurrency": 16,
+    "n": 256,
+    "wall_s": 2.638,
+    "req_per_s": 97.054,
+    "output_tok_per_s": 3139.8,
+    "ttft_p50": 0.0267,
+    "ttft_p95": 0.0436,
+    "latency_p50": 0.1211,
+    "latency_p95": 0.3165,
+    "latency_p99": 0.5278
+  },
+  {
+    "concurrency": 64,
+    "n": 256,
+    "wall_s": 1.365,
+    "req_per_s": 187.603,
+    "output_tok_per_s": 6058.3,
+    "ttft_p50": 0.0614,
+    "ttft_p95": 0.1225,
+    "latency_p50": 0.2213,
+    "latency_p95": 0.5383,
+    "latency_p99": 0.851
+  }
+]

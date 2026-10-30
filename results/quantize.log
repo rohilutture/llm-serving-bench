@@ -1,0 +1,13 @@
+== creating llm-compressor venv 23:59:10
+llmcompressor 0.15.0 | torch 2.14.1+cu130 | transformers 5.21.0
+== quantize fp8 00:04:06
+== quantize w4a16-gptq 00:04:15
+== quantize w4a16-awq 00:06:26
+== vllm-fp8 00:15:15
+   exec_acc 0.7563 (strict 0.7292) | 7574.0 out tok/s | 4.182 s wall | weights 1.779 GB
+== vllm-w4a16-gptq 00:16:33
+   exec_acc 0.7369 (strict 0.7118) | 8021.5 out tok/s | 3.944 s wall | weights 1.143 GB
+== vllm-w4a16-awq 00:17:33
+   exec_acc 0.7205 (strict 0.6954) | 7994.4 out tok/s | 3.95 s wall | weights 1.148 GB
+== report written
+== PART 2 DONE 00:18:34

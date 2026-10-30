@@ -13,16 +13,24 @@
   "exec_accuracy_strict": 0.734,
   "by_kind": {
     "match": 787,
-    "wrong_rows": 170,
-    "invalid_sql": 77
+    "wrong_rows": 167,
+    "invalid_sql": 80
   },
   "by_difficulty": {
     "unknown": 0.7611
   },
-  "wall_seconds": 8.027,
-  "requests_per_s": 128.823,
-  "output_tokens_per_s": 3972.5,
-  "mean_completion_tokens": 30.8,
+  "wall_seconds": 7.547,
+  "requests_per_s": 137.012,
+  "output_tokens_per_s": 4232.9,
+  "mean_completion_tokens": 30.9,
   "peak_memory_gb": null,
-  "model_size_gb": 3.087
+  "model_size_gb": 3.087,
+  "repeats": 5,
+  "wall_seconds_runs": [
+    8.039,
+    7.592,
+    7.462,
+    7.446,
+    7.547
+  ]
 }
