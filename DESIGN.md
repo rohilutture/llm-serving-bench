@@ -46,6 +46,28 @@ Serving the adapter with `enable_lora` costs an extra low-rank matmul per layer,
 After SFT, about half the remaining errors are "runs but returns wrong rows". DPO needs (chosen, rejected) pairs, and executing samples against the DB gives them for free. Rejected samples that run but return wrong rows are preferred over syntax errors as negatives: they sit close to the decision boundary, so they carry more signal. Questions where all k samples agree carry no preference signal and are dropped. The claim to test after training is that accuracy goes up **mostly through fewer `wrong_rows` errors**. The per-kind breakdown confirms or refutes that.
 
 ## 10. Honest-reporting rules
-- Every number comes from my own runs on a stated GPU (4090 or 5090), with the vLLM version recorded.
+- Every number comes from my own runs on a stated GPU (one RTX 4090), with the vLLM version recorded (0.32.0, in the `vllm/vllm-openai` image).
 - Accuracy is "execution accuracy on Spider dev (result-set match)" from this harness, not the official test-suite evaluator.
 - A warm-up call runs before timing (CUDA graph capture and autotuning inflate the first call).
+
+## 11. Where the measurements contradicted the plan
+Written after the runs; the numbers are in the README.
+- **N-gram speculation (section 5) did not help.** The bet was a high acceptance rate because SQL copies identifiers from
+  the schema. The measured acceptance was ~0.3% of drafted tokens (mean acceptance length 1.02), and the run was slower at
+  every concurrency level, including 1. Shrinking the lookup window helped a little but did not make it win.
+- **AWQ did not beat GPTQ (section 4).** On this 1.5B adapter AWQ lost about 4 accuracy points and GPTQ about 2, with the same
+  calibration data. FP8 was the only quantization that was close to lossless.
+- **Quantization's speed benefit is a latency effect, not a throughput one.** Offline, FP8 and W4A16 were within a few
+  percent of bf16 (a saturated GPU is compute-bound). The gain appears at concurrency 1 (p50 latency down 16-41%) and
+  shrinks as concurrency rises, as section 4 predicted.
+- **The decoding convention was a confounder (section 1).** HF `generate(do_sample=False)` still applies the model's
+  generation_config repetition penalty; vLLM's explicit sampling parameters do not. Until decoding was pinned to pure
+  greedy in both, the engines disagreed on 23% of predictions and vLLM looked 1.7 points "better".
+- **The matcher is part of the measurement (section 8).** The first benchmark matcher required identical column order and
+  scored the adapter 3 points below the training repo's evaluator, so it now follows the training repo's rules and also
+  reports the strict number.
+- **FP8 KV cache destroyed accuracy.** I had listed it as a memory lever; without calibrated scales the model produced
+  malformed SQL (27% accuracy).
+- **Timing needs repeats (section 10).** The first pass of each vLLM row is 10-20% slower than later ones, so single-run
+  numbers were off by that much; vLLM rows are now the median of 5 passes.
+
