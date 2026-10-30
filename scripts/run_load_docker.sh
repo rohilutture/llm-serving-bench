@@ -46,6 +46,9 @@ SPEC='{"method":"ngram","num_speculative_tokens":5,"prompt_lookup_max":4}'
 serve_and_test vllm-bf16          m models/merged-bf16 --served-model-name m --enable-prefix-caching
 serve_and_test vllm-bf16-noprefix m models/merged-bf16 --served-model-name m --no-enable-prefix-caching
 serve_and_test vllm-bf16-ngram5   m models/merged-bf16 --served-model-name m --enable-prefix-caching --speculative-config "$SPEC"
+# Tuned n-gram variant: a shorter lookup window (1-2 tokens) so drafts can match inside the schema text
+SPEC2='{"method":"ngram","num_speculative_tokens":3,"prompt_lookup_max":2,"prompt_lookup_min":1}'
+serve_and_test vllm-bf16-ngram3   m models/merged-bf16 --served-model-name m --enable-prefix-caching --speculative-config "$SPEC2"
 serve_and_test vllm-bf16-lora     sql "$BASE" --served-model-name base --enable-lora --lora-modules sql="$ADAPTER" --max-lora-rank 64 --enable-prefix-caching
 for s in fp8 w4a16-gptq w4a16-awq; do
   [ -f "models/$s/config.json" ] && serve_and_test "vllm-$s" m "models/$s" --served-model-name m --enable-prefix-caching
