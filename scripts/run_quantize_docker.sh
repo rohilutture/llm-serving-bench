@@ -10,6 +10,7 @@ SPIDER=${SPIDER:-/data/spider}
 TPL=${TPL:-configs/prompt_template.txt}
 M=models/merged-bf16
 COMMON=(--spider-dir "$SPIDER" --prompt-template "$TPL")
+REPEATS=${REPEATS:-1}  # generation repeats per vLLM row (median reported); e.g. REPEATS=5
 mkdir -p results/logs
 
 if [ ! -x /opt/lc/bin/python ]; then
@@ -47,7 +48,7 @@ PY
 
 for s in fp8 w4a16-gptq w4a16-awq; do quant "$s"; done
 for s in fp8 w4a16-gptq w4a16-awq; do
-  [ -f "models/$s/config.json" ] && run "vllm-$s" --backend vllm --model "models/$s"
+  [ -f "models/$s/config.json" ] && run "vllm-$s" --backend vllm --model "models/$s" --repeats "$REPEATS"
 done
 
 python -m bench.report --results results --baseline hf-bf16 > /dev/null && echo "== report written"

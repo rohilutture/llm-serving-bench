@@ -12,6 +12,7 @@ SPIDER=${SPIDER:-/data/spider}
 TPL=${TPL:-configs/prompt_template.txt}
 M=models/merged-bf16
 COMMON=(--spider-dir "$SPIDER" --prompt-template "$TPL")
+REPEATS=${REPEATS:-1}  # generation repeats per vLLM row (median reported); e.g. REPEATS=5
 mkdir -p results/logs
 
 python -m pip install -q bitsandbytes 2>&1 | tail -1
@@ -47,12 +48,12 @@ run hf-nf4          --backend hf --model "$M" --bnb4
 run hf-bf16-bs1     --backend hf --model "$M" --batch-size 1
 run hf-bf16-bs64    --backend hf --model "$M" --batch-size 64
 # vLLM: precision / serving knobs
-run vllm-bf16          --backend vllm --model "$M"
-run vllm-bf16-lora     --backend vllm --model "$BASE" --adapter "$ADAPTER"
-run vllm-bf16-noprefix --backend vllm --model "$M" --no-prefix-cache
-run vllm-bf16-ngram5   --backend vllm --model "$M" --spec-ngram 5
-run vllm-bf16-kvfp8    --backend vllm --model "$M" --kv-cache-dtype fp8
-run vllm-fp8-online    --backend vllm --model "$M" --quantization fp8   # vLLM's dynamic FP8, no calibration
+run vllm-bf16          --backend vllm --model "$M" --repeats "$REPEATS"
+run vllm-bf16-lora     --backend vllm --model "$BASE" --adapter "$ADAPTER" --repeats "$REPEATS"
+run vllm-bf16-noprefix --backend vllm --model "$M" --no-prefix-cache --repeats "$REPEATS"
+run vllm-bf16-ngram5   --backend vllm --model "$M" --spec-ngram 5 --repeats "$REPEATS"
+run vllm-bf16-kvfp8    --backend vllm --model "$M" --kv-cache-dtype fp8 --repeats "$REPEATS"
+run vllm-fp8-online    --backend vllm --model "$M" --quantization fp8 --repeats "$REPEATS"   # vLLM's dynamic FP8, no calibration
 
 python -m bench.report --results results --baseline hf-bf16 && echo "== report written"
 echo "== PART 1 DONE $(date +%H:%M:%S)"

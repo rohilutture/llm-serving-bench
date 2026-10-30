@@ -75,6 +75,9 @@ def main(argv=None):
     p.add_argument("--concurrency", type=int, nargs="+", default=[1, 4, 16, 64])
     p.add_argument("--max-tokens", type=int, default=256)
     p.add_argument("--name", required=True)
+    p.add_argument("--no-warmup", action="store_true",
+                   help="skip the discarded warm-up pass (without it, later concurrency levels replay prompts "
+                        "that earlier levels already put in the prefix cache)")
     a = p.parse_args(argv)
 
     spider = Path(a.spider_dir)
@@ -84,6 +87,8 @@ def main(argv=None):
     users = [user_message(tpl, schema_text(str(db_path(spider / "database", e.db_id))), e.question)
              for e in exs[:a.n]]
     rows = []
+    if not a.no_warmup:  # populate the prefix cache / autotune once, so every level starts from the same state
+        asyncio.run(level(a.url, a.model, users, 16, a.max_tokens))
     for c in a.concurrency:
         r = asyncio.run(level(a.url, a.model, users, c, a.max_tokens))
         print(json.dumps(r))

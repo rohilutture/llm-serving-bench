@@ -114,13 +114,24 @@ def make_backend(a):
 
 
 def run(backend, examples, db_root, out_dir, template, batch_size=0,
-        max_new_tokens=256, sort_by_length=False, model=""):
+        max_new_tokens=256, sort_by_length=False, model="", repeats=1):
     prompts = build_prompts(backend, examples, db_root, template)
     # Warm-up: first call pays CUDA graph capture / kernel autotuning.
     backend.generate(prompts[:min(4, len(prompts))], 8)
     gens, timings = generate_all(backend, prompts, batch_size, max_new_tokens, sort_by_length)
     rows = score(examples, gens, db_root)
+    # Optional repeats (same process, engine already warm): report the median run, and keep every wall time so the
+    # run-to-run spread is visible. Accuracy comes from the first pass (greedy decoding).
+    all_timings = [timings]
+    for _ in range(max(repeats, 1) - 1):
+        all_timings.append(generate_all(backend, prompts, batch_size, max_new_tokens, sort_by_length)[1])
+    walls = [sum(t["seconds"] for t in ts) for ts in all_timings]
+    median_run = sorted(range(len(walls)), key=lambda i: walls[i])[len(walls) // 2]
+    timings = all_timings[median_run]
     summary = summarize(rows, timings, backend, model)
+    if repeats > 1:
+        summary["repeats"] = repeats
+        summary["wall_seconds_runs"] = [round(w, 3) for w in walls]
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
     with open(out / "predictions.jsonl", "w", encoding="utf-8") as f:
@@ -145,6 +156,9 @@ def main(argv=None):
     p.add_argument("--batch-size", type=int, default=0, help="0 = all at once")
     p.add_argument("--max-new-tokens", type=int, default=256)
     p.add_argument("--quantization", help="vLLM quantization override, e.g. fp8")
+    p.add_argument("--repeats", type=int, default=1,
+                   help="generate this many times in one process and report the median wall time (spread kept in "
+                        "summary.wall_seconds_runs)")
     p.add_argument("--bnb4", action="store_true", help="HF: bitsandbytes NF4")
     p.add_argument("--hf-model-defaults", action="store_true",
                    help="HF: inherit repetition_penalty etc. from the model's generation_config (what the "
@@ -161,7 +175,7 @@ def main(argv=None):
     bs = a.batch_size or (16 if a.backend == "hf" else 0)
     s = run(backend, examples, spider / "database", Path("results") / a.name,
             load_template(a.prompt_template), bs, a.max_new_tokens,
-            sort_by_length=(a.backend == "hf"), model=a.model)
+            sort_by_length=(a.backend == "hf"), model=a.model, repeats=a.repeats)
     print(json.dumps(s, indent=2))
 
 

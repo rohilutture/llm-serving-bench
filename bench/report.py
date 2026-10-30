@@ -61,6 +61,22 @@ def table(rows, bad=()):
     return "\n".join(lines)
 
 
+def online_table(results_dir: Path) -> str:
+    """Latency under concurrency, from results/<run>/load_test.json (bench.load_test)."""
+    rows = []
+    for f in sorted(results_dir.glob("*/load_test.json")):
+        for r in json.loads(f.read_text()):
+            rows.append((f.parent.name, r))
+    if not rows:
+        return ""
+    head = ["Run", "Concurrency", "TTFT p50 (s)", "Latency p50 (s)", "Latency p95 (s)", "Latency p99 (s)", "Out tok/s"]
+    lines = ["\n## Online latency (streaming, `vllm serve`)\n", "| " + " | ".join(head) + " |", "|" + "---|" * len(head)]
+    for name, r in sorted(rows, key=lambda x: (x[1]["concurrency"], x[0])):
+        lines.append(f"| {name} | {r['concurrency']} | {r['ttft_p50']} | {r['latency_p50']} | {r['latency_p95']} | "
+                     f"{r['latency_p99']} | {r['output_tok_per_s']} |")
+    return "\n".join(lines) + "\n"
+
+
 def plot(rows, front, path: Path, bad=()):
     import matplotlib
     matplotlib.use("Agg")
@@ -107,7 +123,8 @@ def main(argv=None):
           "`Exec acc` ignores column order (the training repo's rule); `Strict acc` requires identical column order. "
           "`Weights GB` is blank for runs that quantize at load time.\n",
           table(rows, bad),
-          f"\n![speed vs accuracy]({Path(a.out).with_suffix('.png').name})\n"]
+          f"\n![speed vs accuracy]({Path(a.out).with_suffix('.png').name})\n",
+          online_table(Path(a.results))]
     Path(a.out).write_text("\n".join(md), encoding="utf-8")
     print("\n".join(md))
 
